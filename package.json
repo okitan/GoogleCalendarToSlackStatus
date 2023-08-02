@@ -7,6 +7,7 @@
   "devDependencies": {
     "@google/clasp": "2.4.2",
     "@types/google-apps-script": "1.0.66",
+    "@types/google-apps-script-oauth2": "^38.0.0",
     "prettier": "3.0.0",
     "typescript": "5.1.6"
   }
