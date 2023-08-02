@@ -1,3 +1,13 @@
+import { _render, _renderError } from "./output";
+import { _getSlackProperties, _getSlackService } from "./slack";
+
+// hack for function import
+const render = _render;
+const renderError = _renderError;
+const getSlackProperties = _getSlackProperties;
+const getSlackService = _getSlackService;
+
+// handlers
 function doGet(request: GoogleAppsScript.Events.DoGet) {
   const { clientId, clientSecret } = getSlackProperties();
   if (!clientId || !clientSecret) return renderError();
@@ -27,38 +37,4 @@ function slackAuthCallback(request: GoogleAppsScript.Events.DoGet) {
   } else {
     return render({ slackAuthorizationUrl: slack.getAuthorizationUrl() });
   }
-}
-
-function getSlackProperties() {
-  const clientId = PropertiesService.getScriptProperties().getProperty("SLACK_CLIENT_ID");
-  const clientSecret = PropertiesService.getScriptProperties().getProperty("SLACK_CLIENT_SECRET");
-
-  return { clientId, clientSecret };
-}
-
-function getSlackService({ clientId, clientSecret }: { clientId: string; clientSecret: string }) {
-  return OAuth2.createService("slack")
-    .setAuthorizationBaseUrl("https://slack.com/oauth/authorize")
-    .setTokenUrl("https://slack.com/api/oauth.access")
-    .setClientId(clientId)
-    .setClientSecret(clientSecret)
-    .setCallbackFunction("slackAuthCallback")
-    .setPropertyStore(PropertiesService.getUserProperties())
-    .setScope("users:write");
-}
-
-/*
-    Template
- */
-function render({ slackAuthorizationUrl }: { slackAuthorizationUrl?: string }) {
-  const template = HtmlService.createTemplateFromFile("template/index.html");
-
-  template.topUrl = ScriptApp.getService().getUrl();
-  template.slackAuthorizationUrl = slackAuthorizationUrl;
-
-  return template.evaluate().setTitle("Google Calendar To Slack Status");
-}
-
-function renderError() {
-  return HtmlService.createHtmlOutputFromFile("template/error.html").setTitle("Google Calendar To Slack Status");
 }
