@@ -56,9 +56,9 @@ function render({ slackAuthorizationUrl }: { slackAuthorizationUrl?: string }) {
   template.topUrl = ScriptApp.getService().getUrl();
   template.slackAuthorizationUrl = slackAuthorizationUrl;
 
-  return template.evaluate();
+  return template.evaluate().setTitle("Google Calendar To Slack Status");
 }
 
 function renderError() {
-  return HtmlService.createHtmlOutputFromFile("template/error.html");
+  return HtmlService.createHtmlOutputFromFile("template/error.html").setTitle("Google Calendar To Slack Status");
 }
