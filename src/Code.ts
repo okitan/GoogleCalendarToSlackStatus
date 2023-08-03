@@ -1,11 +1,12 @@
 import { _render, _renderError } from "./output";
-import { _getSlackProperties, _getSlackService } from "./slack";
+import { _getSlackProperties, _getSlackService, _updateSlackStatus, type Status } from "./slack";
 
 // hack for function import
 const render = _render;
 const renderError = _renderError;
 const getSlackProperties = _getSlackProperties;
 const getSlackService = _getSlackService;
+const updateSlackStatus = _updateSlackStatus;
 
 // handlers
 function doGet(request: GoogleAppsScript.Events.DoGet) {
@@ -15,11 +16,19 @@ function doGet(request: GoogleAppsScript.Events.DoGet) {
   const slack = getSlackService({ clientId, clientSecret });
   if (!slack.hasAccess()) return render({ slackAuthorizationUrl: slack.getAuthorizationUrl() });
 
-  // remoke
+  // revoke
   if (request.parameter.revoke) {
     slack.reset();
     return render({ slackAuthorizationUrl: slack.getAuthorizationUrl() });
   }
+
+  // tmp
+  const status: Status = {
+    status_text: "test",
+    status_emoji: ":ghost:",
+    status_expiration: new Date().getTime() / 1000 + 60 * 2,
+  };
+  updateSlackStatus({ slack, status });
 
   return render({});
 }
@@ -31,7 +40,7 @@ function slackAuthCallback(request: GoogleAppsScript.Events.DoGet) {
   const slack = getSlackService({ clientId, clientSecret });
   const authorized = slack.handleCallback(request);
 
-  if (slack.hasAccess()) {
+  if (authorized) {
     // TODO: add Time Trigger
     return render({});
   } else {
