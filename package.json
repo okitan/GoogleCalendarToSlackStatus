@@ -2,7 +2,8 @@
   "scripts": {
     "build:check": "tsc --noEmit",
     "clasp": "clasp --project src/.clasp.json",
-    "clasp:init": "clasp create --title 'Google Calendar To Slack Status' --type webapp --rootDir src"
+    "clasp:init": "clasp create --title 'Google Calendar To Slack Status' --type webapp --rootDir src && run update-file-push-order",
+    "update-file-push-order": "node bin/update-file-push-order.js"
   },
   "devDependencies": {
     "@google/clasp": "2.4.2",
