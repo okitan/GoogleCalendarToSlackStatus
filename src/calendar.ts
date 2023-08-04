@@ -1,4 +1,13 @@
 import type { calendar_v3 } from "@googleapis/calendar";
+import type { Status } from "./slack";
+
+const defaultIcon = {
+  absent: ":palm_tree:",
+  away: ":no_entry:",
+  secret: ":lock:",
+  default: ":ghost:",
+};
+export { defaultIcon };
 
 // tmp
 function debug() {
@@ -34,6 +43,29 @@ export function _findEventForSlackStatus(events: GoogleAppsScript.Calendar.Schem
 
   // shorter event is prior
   return targetEvents.sort(compareEventLength)[0];
+}
+
+// event から status を生成する
+export function _createSlackStatus(
+  event: GoogleAppsScript.Calendar.Schema.Event | undefined,
+  defaultStatus?: Status,
+): Status | undefined {
+  if (!event) return defaultStatus;
+
+  const end = new Date((event.end!.dateTime || event.end!.date)!).getTime() / 1000;
+
+  // mask confidential information
+  if (event.visibility === "private" || event.visibility === "confidential")
+    return { status_text: "ヒミツだよ", status_emoji: defaultIcon.secret, status_expiration: end };
+
+  const emoji =
+    event.eventType === "outOfOffice"
+      ? eventLength(event) > 4 * 60 * 60 * 1000
+        ? defaultIcon.absent
+        : defaultIcon.away
+      : defaultIcon.default;
+
+  return { status_text: event.summary, status_emoji: emoji, status_expiration: end };
 }
 
 // shorter event is better
