@@ -7,6 +7,13 @@
         "version": "43",
         "libraryId": "1B7FSrk5Zi6L1rSxxTDgDEUsPzlukDsi4KGuTMorsTQHhGBzBkMun4iDF"
       }
+    ],
+    "enabledAdvancedServices": [
+      {
+        "userSymbol": "Calendar",
+        "version": "v3",
+        "serviceId": "calendar"
+      }
     ]
   },
   "exceptionLogging": "STACKDRIVER",

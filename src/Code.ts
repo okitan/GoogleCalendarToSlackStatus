@@ -1,3 +1,4 @@
+import { _fetchCurrentCalendarEvents } from "./calendar";
 import { _render, _renderError } from "./output";
 import { _getSlackProperties, _getSlackService, _updateSlackStatus, type Status } from "./slack";
 
@@ -7,6 +8,7 @@ const renderError = _renderError;
 const getSlackProperties = _getSlackProperties;
 const getSlackService = _getSlackService;
 const updateSlackStatus = _updateSlackStatus;
+const fetchCurrentCalendarEvents = _fetchCurrentCalendarEvents;
 
 // handlers
 function doGet(request: GoogleAppsScript.Events.DoGet) {
@@ -23,12 +25,12 @@ function doGet(request: GoogleAppsScript.Events.DoGet) {
   }
 
   // tmp
-  const status: Status = {
-    status_text: "test",
-    status_emoji: ":ghost:",
-    status_expiration: new Date().getTime() / 1000 + 60 * 2,
-  };
-  updateSlackStatus({ slack, status });
+  // const status: Status = {
+  //   status_text: "test",
+  //   status_emoji: ":ghost:",
+  //   status_expiration: new Date().getTime() / 1000 + 60 * 2,
+  // };
+  // updateSlackStatus({ slack, status });
 
   return render({});
 }
