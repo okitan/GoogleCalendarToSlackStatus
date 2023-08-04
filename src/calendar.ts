@@ -11,7 +11,15 @@ export { defaultIcon };
 
 // tmp
 function debug() {
-  console.log(JSON.stringify(_fetchCurrentCalendarEvents(), null, 2));
+  const events = _fetchCurrentCalendarEvents();
+  const event = _findEventForSlackStatus(events);
+  const status = _createSlackStatus(event);
+
+  console.log(events, event, status);
+}
+
+export function _fetchAndCreateSlackStatus(defaultStatus?: Status): Status | undefined {
+  return _createSlackStatus(_findEventForSlackStatus(_fetchCurrentCalendarEvents()), defaultStatus);
 }
 
 // enents of next 1 minute
