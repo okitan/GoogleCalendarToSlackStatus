@@ -21,10 +21,6 @@ function doGet(request: GoogleAppsScript.Events.DoGet) {
   const slack = getSlackService({ clientId, clientSecret });
   if (!slack.hasAccess()) return renderUnAuthorized(slack.getAuthorizationUrl());
 
-  // tmp
-  const status = fetchAndCreateSlackStatus();
-  if (status) updateSlackStatus({ slack, status });
-
   return buildScreen();
 }
 
