@@ -1,8 +1,19 @@
-export function _render({ topUrl, triggerDuration }: { topUrl: string; triggerDuration?: number }) {
+import type { Config } from "./config";
+
+export function _render({
+  topUrl,
+  triggerDuration,
+  properties,
+}: {
+  topUrl: string;
+  triggerDuration?: number;
+  properties: Partial<Config>;
+}) {
   const template = HtmlService.createTemplateFromFile("template/index.html");
 
   template.topUrl = topUrl;
   template.triggerDuration = triggerDuration;
+  template.properties = properties;
 
   return template.evaluate().setTitle("Google Calendar To Slack Status");
 }

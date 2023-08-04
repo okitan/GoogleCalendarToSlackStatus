@@ -9,18 +9,19 @@ const defaultConfig = {
   freeText: "",
 };
 export { defaultConfig };
+export type Config = typeof defaultConfig;
 
-export function _getConfig(): typeof defaultConfig {
+export function _getUserProperties() {
   const properties = PropertiesService.getUserProperties();
 
-  return {
-    absentIcon: properties.getProperty("absentIcon") ?? defaultConfig.absentIcon,
-    awayIcon: properties.getProperty("awayIcon") ?? defaultConfig.awayIcon,
-    secretIcon: properties.getProperty("secretIcon") ?? defaultConfig.secretIcon,
-    secretText: properties.getProperty("secretText") ?? defaultConfig.secretText,
-    focusIcon: properties.getProperty("focusIcon") ?? defaultConfig.focusIcon,
-    defaultIcon: properties.getProperty("defaultIcon") ?? defaultConfig.defaultIcon,
-    freeIcon: properties.getProperty("freeIcon") ?? defaultConfig.freeIcon,
-    freeText: properties.getProperty("freeText") ?? defaultConfig.freeText,
-  };
+  return Object.keys(defaultConfig).reduce<Partial<Config>>((acc, key) => {
+    const value = properties.getProperty(key);
+    // FIXME: as
+    if (value !== null) acc[key as keyof typeof defaultConfig] = value;
+    return acc;
+  }, {});
+}
+
+export function _getConfig(): Config {
+  return Object.assign({}, defaultConfig, _getUserProperties());
 }

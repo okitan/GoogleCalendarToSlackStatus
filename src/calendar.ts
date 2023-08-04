@@ -1,18 +1,19 @@
 import type { calendar_v3 } from "@googleapis/calendar";
 import type { Status } from "./slack";
-import type { defaultConfig } from "./config";
+import type { Config } from "./config";
 
 // tmp
 function debug() {
   const events = _fetchCurrentCalendarEvents();
   const event = _findEventForSlackStatus(events);
   // @ts-ignore: this can be run in GAS
-  const status = _createSlackStatus(event, defaultConfig);
+  const config: Config = defaultConfig;
+  const status = _createSlackStatus(event, config);
 
-  console.log(events, event, status);
+  console.log(events, event, status, config);
 }
 
-export function _fetchAndCreateSlackStatus(config: typeof defaultConfig): Status | undefined {
+export function _fetchAndCreateSlackStatus(config: Config): Status | undefined {
   return _createSlackStatus(_findEventForSlackStatus(_fetchCurrentCalendarEvents()), config);
 }
 
@@ -50,7 +51,7 @@ export function _findEventForSlackStatus(events: GoogleAppsScript.Calendar.Schem
 // event から status を生成する
 export function _createSlackStatus(
   event: GoogleAppsScript.Calendar.Schema.Event | undefined,
-  config: typeof defaultConfig,
+  config: Config,
 ): Status | undefined {
   if (!event) return { status_text: config.freeText, status_emoji: config.freeIcon, status_expiration: 0 };
 

@@ -1,5 +1,5 @@
 import { _fetchAndCreateSlackStatus } from "./calendar";
-import { _getConfig } from "./config";
+import { _getConfig, _getUserProperties } from "./config";
 import { _render, _renderError, _renderUnAuthorized } from "./output";
 import { _getSlackProperties, _getSlackService, _updateSlackStatus, type Status } from "./slack";
 
@@ -14,6 +14,7 @@ const updateSlackStatus = _updateSlackStatus;
 
 const fetchAndCreateSlackStatus = _fetchAndCreateSlackStatus;
 const getConfig = _getConfig;
+const getUserProperties = _getUserProperties;
 
 // handlers
 function doGet(request: GoogleAppsScript.Events.DoGet) {
@@ -89,6 +90,7 @@ export function removeTriggers() {
 function buildScreen() {
   const params: Parameters<typeof render>[0] = {
     topUrl: ScriptApp.getService().getUrl(),
+    properties: getUserProperties(),
   };
 
   // check triggers
