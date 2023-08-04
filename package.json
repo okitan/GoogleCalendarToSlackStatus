@@ -2,7 +2,7 @@
   "scripts": {
     "build:check": "tsc --noEmit",
     "clasp": "clasp --project src/.clasp.json",
-    "init": "run-s clasp:init create-manifest-json update-file-push-order",
+    "init": "npm run clasp:init && npm run create-manifest-json && npm run update-file-push-order",
     "clasp:init": "clasp create --title 'Google Calendar To Slack Status' --type webapp --rootDir src",
     "create-manifest-json": "node bin/create-manifest-json.js",
     "update-file-push-order": "node bin/update-file-push-order.js",
