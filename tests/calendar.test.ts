@@ -53,6 +53,7 @@ describe(_createSlackStatus, () => {
     ["with confidential event", confidentialEvent, { status_text: "ヒミツだよ", status_emoji: defaultIcon.secret }],
     ["with moving event", movingEvent, { status_emoji: defaultIcon.away }],
     ["with days off event", daysOffEvent, { status_emoji: defaultIcon.absent }],
+    ["with focus event", focusTimeEvent, { status_emoji: defaultIcon.focus }],
   ])("should return status %s", (_, event, partial_expected) => {
     const expected: Status = Object.assign(
       // default

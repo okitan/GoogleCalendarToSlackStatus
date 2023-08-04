@@ -5,6 +5,7 @@ const defaultIcon = {
   absent: ":palm_tree:",
   away: ":no_entry:",
   secret: ":lock:",
+  focus: ":mute:",
   default: ":ghost:",
 };
 export { defaultIcon };
@@ -66,12 +67,16 @@ export function _createSlackStatus(
   if (event.visibility === "private" || event.visibility === "confidential")
     return { status_text: "ヒミツだよ", status_emoji: defaultIcon.secret, status_expiration: end };
 
-  const emoji =
-    event.eventType === "outOfOffice"
-      ? eventLength(event) > 4 * 60 * 60 * 1000
-        ? defaultIcon.absent
-        : defaultIcon.away
-      : defaultIcon.default;
+  const emoji = (() => {
+    switch (event.eventType) {
+      case "outOfOffice":
+        return eventLength(event) > 4 * 60 * 60 * 1000 ? defaultIcon.absent : defaultIcon.away;
+      case "focusTime":
+        return defaultIcon.focus;
+      default:
+        return defaultIcon.default;
+    }
+  })();
 
   return { status_text: event.summary, status_emoji: emoji, status_expiration: end };
 }
