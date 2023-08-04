@@ -1,26 +1,19 @@
 import type { calendar_v3 } from "@googleapis/calendar";
 import type { Status } from "./slack";
-
-const defaultIcon = {
-  absent: ":palm_tree:",
-  away: ":no_entry:",
-  secret: ":lock:",
-  focus: ":mute:",
-  default: ":ghost:",
-};
-export { defaultIcon };
+import type { defaultConfig } from "./config";
 
 // tmp
 function debug() {
   const events = _fetchCurrentCalendarEvents();
   const event = _findEventForSlackStatus(events);
-  const status = _createSlackStatus(event);
+  // @ts-ignore: this can be run in GAS
+  const status = _createSlackStatus(event, defaultConfig);
 
   console.log(events, event, status);
 }
 
-export function _fetchAndCreateSlackStatus(defaultStatus?: Status): Status | undefined {
-  return _createSlackStatus(_findEventForSlackStatus(_fetchCurrentCalendarEvents()), defaultStatus);
+export function _fetchAndCreateSlackStatus(config: typeof defaultConfig): Status | undefined {
+  return _createSlackStatus(_findEventForSlackStatus(_fetchCurrentCalendarEvents()), config);
 }
 
 // enents of next 1 minute
@@ -57,24 +50,24 @@ export function _findEventForSlackStatus(events: GoogleAppsScript.Calendar.Schem
 // event から status を生成する
 export function _createSlackStatus(
   event: GoogleAppsScript.Calendar.Schema.Event | undefined,
-  defaultStatus?: Status,
+  config: typeof defaultConfig,
 ): Status | undefined {
-  if (!event) return defaultStatus;
+  if (!event) return { status_text: config.freeText, status_emoji: config.freeIcon, status_expiration: 0 };
 
   const end = new Date((event.end!.dateTime || event.end!.date)!).getTime() / 1000;
 
   // mask confidential information
   if (event.visibility === "private" || event.visibility === "confidential")
-    return { status_text: "ヒミツだよ", status_emoji: defaultIcon.secret, status_expiration: end };
+    return { status_text: config.secretText, status_emoji: config.secretIcon, status_expiration: end };
 
   const emoji = (() => {
     switch (event.eventType) {
       case "outOfOffice":
-        return eventLength(event) > 4 * 60 * 60 * 1000 ? defaultIcon.absent : defaultIcon.away;
+        return eventLength(event) > 4 * 60 * 60 * 1000 ? config.absentIcon : config.awayIcon;
       case "focusTime":
-        return defaultIcon.focus;
+        return config.focusIcon;
       default:
-        return defaultIcon.default;
+        return config.defaultIcon;
     }
   })();
 

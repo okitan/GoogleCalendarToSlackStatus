@@ -1,4 +1,5 @@
 import { _fetchAndCreateSlackStatus } from "./calendar";
+import { _getConfig } from "./config";
 import { _render, _renderError, _renderUnAuthorized } from "./output";
 import { _getSlackProperties, _getSlackService, _updateSlackStatus, type Status } from "./slack";
 
@@ -12,6 +13,7 @@ const getSlackService = _getSlackService;
 const updateSlackStatus = _updateSlackStatus;
 
 const fetchAndCreateSlackStatus = _fetchAndCreateSlackStatus;
+const getConfig = _getConfig;
 
 // handlers
 function doGet(request: GoogleAppsScript.Events.DoGet) {
@@ -67,7 +69,8 @@ function onClock(event: GoogleAppsScript.Events.TimeDriven) {
   if (!slack.hasAccess()) throw new Error("slack has no access");
 
   // TODO: default status with config
-  const status = fetchAndCreateSlackStatus({ status_emoji: "", status_text: "" });
+
+  const status = fetchAndCreateSlackStatus(getConfig());
   if (status) updateSlackStatus({ slack, status });
 }
 
