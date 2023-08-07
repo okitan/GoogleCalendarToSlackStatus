@@ -9,6 +9,11 @@
       integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
+    <style>
+      .form-control::placeholder {
+        color: #cccccc;
+      }
+    </style>
   </head>
 
   <body class="container-md">
@@ -23,8 +28,9 @@
       </div>
     </section>
 
-    <section class="row my-4">
-      <div class="col">
+    <section class="row col-6 my-4">
+      <h2>Status設定</h2>
+      <div class="mb-4">
         <? if (triggerDuration > 0) { ?>
         <!--p>Slack Statusは<?= triggerDuration ?>分ごとに更新されています。</p-->
         <form method="post" action="<?= topUrl ?>" target="_top">
@@ -38,24 +44,22 @@
         </form>
         <? } ?>
       </div>
-    </section>
-
-    <section class="row col-6 my-4">
-      <h2>Status設定</h2>
 
       <? Object.keys(defaultConfig).forEach((item) => { ?>
-      <form method="post" action="<?= topUrl ?>" target="_top">
-        <div class="input-group mb-3">
-          <span class="input-group-text"><?= item ?></span>
-          <input
-            class="form-control"
-            id="<?= item ?>"
-            name="properties.<?= item ?>"
-            value="<?= properties[item] ?>"
-            placeholder="default: <?= defaultConfig[item] ?>"
-          />
-          <button type="submit" class="btn btn-outline-secondary">更新</button>
-        </div>
+      <form class="input-group mb-3" method="post" action="<?= topUrl ?>" target="_top">
+        <span class="input-group-text"><?= item ?></span>
+        <input
+          type="text"
+          class="form-control"
+          id="<?= item ?>"
+          name="properties.<?= item ?>"
+          value="<?= properties[item] ?>"
+          <? if (item.endsWith("Icon")) { ?>
+          pattern="^:.+:$"
+          <? } ?>
+          placeholder="<?= defaultConfig[item] ?>"
+        />
+        <button type="submit" class="btn btn-outline-secondary">更新</button>
       </form>
       <? }) ?>
     </section>
