@@ -11,34 +11,53 @@
     />
   </head>
 
-  <body class="container">
+  <body class="container-md">
     <h1>Google Calendar To Slack Status</h1>
 
-    <h2>設定</h2>
-    <section>
-      <h3>Slack連携</h3>
-
-      <form method="post" action="<?= topUrl ?>" target="_top">
-        <input type="hidden" name="slack" value="revoke" />
-        <button type="submit" class="btn btn-danger">Slack連携解除</button>
-      </form>
+    <section class="row my-4">
+      <div class="col">
+        <form method="post" action="<?= topUrl ?>" target="_top">
+          <input type="hidden" name="slack" value="revoke" />
+          <button type="submit" class="btn btn-outline-danger">Slack連携解除</button>
+        </form>
+      </div>
     </section>
 
-    <section>
-      <h3>Trigger設定</h3>
+    <section class="row my-4">
+      <div class="col">
+        <? if (triggerDuration > 0) { ?>
+        <!--p>Slack Statusは<?= triggerDuration ?>分ごとに更新されています。</p-->
+        <form method="post" action="<?= topUrl ?>" target="_top">
+          <input type="hidden" name="trigger" value="off" />
+          <button type="submit" class="btn btn-outline-danger">Slack Statusの更新を止める</button>
+        </form>
+        <? } else { ?>
+        <form method="post" action="<?= topUrl ?>" target="_top">
+          <input type="hidden" name="trigger" value="on" />
+          <button type="submit" class="btn btn-outline-primary">Slack Statusを更新する</button>
+        </form>
+        <? } ?>
+      </div>
+    </section>
 
-      <? if (triggerDuration > 0) { ?>
-      <p>Slack Statusは<?= triggerDuration ?>分ごとに更新されています。</p>
+    <section class="row col-6 my-4">
+      <h2>Status設定</h2>
+
+      <? Object.keys(defaultConfig).forEach((item) => { ?>
       <form method="post" action="<?= topUrl ?>" target="_top">
-        <input type="hidden" name="trigger" value="off" />
-        <button type="submit" class="btn btn-danger">Slack Statusの更新を止める</button>
+        <div class="input-group mb-3">
+          <span class="input-group-text"><?= item ?></span>
+          <input
+            class="form-control"
+            id="<?= item ?>"
+            name="properties.<?= item ?>"
+            value="<?= properties[item] ?>"
+            placeholder="default: <?= defaultConfig[item] ?>"
+          />
+          <button type="submit" class="btn btn-outline-secondary">更新</button>
+        </div>
       </form>
-      <? } else { ?>
-      <form method="post" action="<?= topUrl ?>" target="_top">
-        <input type="hidden" name="trigger" value="on" />
-        <button type="submit" class="btn btn-primary">Slack Statusを更新する</button>
-      </form>
-      <? } ?>
+      <? }) ?>
     </section>
   </body>
 </html>

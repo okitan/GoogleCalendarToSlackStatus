@@ -4,7 +4,7 @@ const defaultConfig = {
   secretIcon: ":lock:",
   secretText: "ヒミツだよ",
   focusIcon: ":mute:",
-  defaultIcon: ":ghost:",
+  scheduleIcon: ":calendar:",
   freeIcon: "",
   freeText: "",
 };
@@ -14,10 +14,11 @@ export type Config = typeof defaultConfig;
 export function _getUserProperties() {
   const properties = PropertiesService.getUserProperties();
 
-  return Object.keys(defaultConfig).reduce<Partial<Config>>((acc, key) => {
+  const keys = Object.keys(defaultConfig) as (keyof Config)[];
+  return keys.reduce<Partial<Config>>((acc, key) => {
     const value = properties.getProperty(key);
-    // FIXME: as
-    if (value !== null) acc[key as keyof typeof defaultConfig] = value;
+
+    if (value !== null) acc[key] = value;
     return acc;
   }, {});
 }

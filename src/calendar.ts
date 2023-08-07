@@ -68,7 +68,7 @@ export function _createSlackStatus(
       case "focusTime":
         return config.focusIcon;
       default:
-        return config.defaultIcon;
+        return config.scheduleIcon;
     }
   })();
 

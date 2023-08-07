@@ -67,7 +67,7 @@ describe(_createSlackStatus, () => {
       // default
       {
         status_text: event.summary,
-        status_emoji: defaultConfig.defaultIcon,
+        status_emoji: defaultConfig.scheduleIcon,
         status_expiration: Date.parse((event.end?.dateTime ?? event.end?.date)!) / 1000,
       },
       partial_expected,

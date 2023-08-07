@@ -1,5 +1,5 @@
 import { _fetchAndCreateSlackStatus } from "./calendar";
-import { _getConfig, _getUserProperties } from "./config";
+import { _getConfig, defaultConfig, _getUserProperties } from "./config";
 import { _render, _renderError, _renderUnAuthorized } from "./output";
 import { _getSlackProperties, _getSlackService, _updateSlackStatus, type Status } from "./slack";
 
@@ -46,6 +46,20 @@ function doPost(request: GoogleAppsScript.Events.DoPost) {
     removeTriggers();
   }
 
+  Object.keys(defaultConfig).forEach((key) => {
+    const name = `properties.${key}`;
+
+    if (name in request.parameter) {
+      const value = request.parameter[name];
+
+      if (value) {
+        PropertiesService.getUserProperties().setProperty(key, value);
+      } else {
+        PropertiesService.getUserProperties().deleteProperty(key);
+      }
+    }
+  });
+
   return buildScreen();
 }
 
@@ -91,6 +105,7 @@ function buildScreen() {
   const params: Parameters<typeof render>[0] = {
     topUrl: ScriptApp.getService().getUrl(),
     properties: getUserProperties(),
+    defaultConfig,
   };
 
   // check triggers
