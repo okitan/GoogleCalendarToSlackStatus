@@ -22,7 +22,7 @@ npm run clasp -- push
 
 3. Slack Appを作成します
 
-- `https://api.slack.com/apps/` にアクセスし、`manifest.json` をアップロードしSlack Appを作成します
+- https://api.slack.com/apps/ にアクセスし、`manifest.json` をアップロードしSlack Appを作成します
 - 作成したSlack Appをワークスペースにインストールし、`Client ID` と `Client Secret` を取得します
 
 4. Google App Scriptに環境変数を設定します
