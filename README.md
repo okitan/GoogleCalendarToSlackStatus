@@ -80,6 +80,6 @@ Google Calendar To Slack Status は次の条件にあてはまる予定を取り
 | お休み           | Google Calendar の予定の `eventType` が `outOfOffice（不在）`かつ4時間以上の予定 |
 | 外出             | Google Calendar の予定の `eventType` が`outOfOffice（不在）`かつ4時間未満の予定  |
 | サイレントモード | Google Calendarの予定の `eventType` が `focusTime（サイレントモード）`の予定     |
-| 非公開           | oogle Calendarの予定の `visibility` が `private （非公開）`の予定タイプ          |
+| 非公開           | Google Calendarの予定の `visibility` が `private （非公開）`の予定タイプ         |
 
 非公開の予定以外は、カレンダーの`summary`をステータスに表示します
