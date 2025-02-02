@@ -11,7 +11,7 @@
   "devDependencies": {
     "@google/clasp": "2.5.0",
     "@googleapis/calendar": "9.7.9",
-    "@types/google-apps-script": "1.0.91",
+    "@types/google-apps-script": "1.0.92",
     "@types/google-apps-script-oauth2": "38.0.4",
     "@types/jest": "^29.5.3",
     "dayjs": "^1.11.9",
