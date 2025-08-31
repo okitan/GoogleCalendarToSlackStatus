@@ -13,7 +13,7 @@
     "@googleapis/calendar": "9.8.0",
     "@types/google-apps-script": "1.0.100",
     "@types/google-apps-script-oauth2": "38.0.4",
-    "@types/jest": "^29.5.3",
+    "@types/jest": "^30.0.0",
     "dayjs": "^1.11.9",
     "prettier": "3.6.2",
     "ts-jest": "^29.1.1",
