@@ -17,6 +17,6 @@
     "dayjs": "^1.11.9",
     "prettier": "3.6.2",
     "ts-jest": "^29.1.1",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   }
 }
