@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@google/clasp": "2.5.0",
-    "@googleapis/calendar": "11.0.1",
+    "@googleapis/calendar": "12.0.0",
     "@types/google-apps-script": "2.0.7",
     "@types/google-apps-script-oauth2": "38.0.4",
     "@types/jest": "^30.0.0",
